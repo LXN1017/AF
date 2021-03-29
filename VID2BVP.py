@@ -19,19 +19,18 @@ def feature_normalize(data):
 feature = h5py.File('vid_set.mat')
 x_train = feature['vid_set']
 tf.bitcast(x_train, float)
+x_train = np.expand_dims(x_train, axis=0)
+x_train = np.expand_dims(x_train, axis=4)
 #-----------------load phase changes of videos--------------------------------
 mask = load('vid_phase.mat')
 x_train_mask = mask['vid_phase']
 tf.bitcast(x_train_mask, float)
+x_train_mask = np.expand_dims(x_train_mask, axis=0)
+x_train_mask = np.expand_dims(x_train_mask, axis=4)
 #-----------------load reference pulse signals used as labels-----------------
 data = load('bvp_set.mat')
 y_train = data['bvp_set']
 tf.bitcast(y_train, float)
-x_train = np.expand_dims(x_train, axis=0)
-x_train = np.expand_dims(x_train, axis=4)
-x_train_mask = np.expand_dims(x_train_mask, axis=0)
-x_train_mask = np.expand_dims(x_train_mask, axis=4)
-
 # -----------------------AST-CNN architecture-------------------------------
 input1 = tf.keras.Input(shape=(100, 200, 600, 1), name='bvp')
 c11 = tf.keras.layers.Conv3D(filters=64, kernel_size=(3, 3, 1), strides=[3, 3, 1], padding='valid', activation='tanh')(input1)
