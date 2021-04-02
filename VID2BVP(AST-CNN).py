@@ -54,9 +54,16 @@ fc3 = tf.keras.layers.Dense(326, activation='sigmoid')(fc2)
 model = tf.keras.Model(inputs=[input1, input2], outputs=fc3, name='BVP_detector')
 model.summary()
 
+# ---------------------loss function----------------------------------
+def custom_loss(lab, pre):
+    lab_ = lab-tf.reduce_mean(lab, axis=1)
+    pre_ = pre-tf.reduce_mean(pre, axis=1)
+    Pearson = tf.multiply(lab_, pre_)/(tf.norm(lab_)*tf.norm(pre_))
+    custom_loss = 1 - Pearson
+    return custom_loss
+
 model.compile(optimizer='adam',
-               loss='CosineSimilarity',
-#               loss='MSE',
+               loss=custom_loss,
                metrics=['MSE', 'CosineSimilarity']
               )
 
