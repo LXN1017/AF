@@ -12,13 +12,14 @@ def feature_normalize(data):
     return (data - mu) / sigma
 
 
-x_train = load('training_samples.mat')
-y_train = load('training_labels.mat')
+x_train_face = load('training_samples_face.mat') # VPPG pulse signals from face videos
+x_train_finger = load('training_samples_finger.mat') # PPG pulse signals from fingertips
+y_train = load('training_labels.mat') # lables for AF classification
 
 
 # -----------------------Sparse representation in DN-PSD-------------------------------
 inputs = tf.keras.Input(shape=(1, 600), name='raw_bvp')
-d1 = tf.keras.layers.Dense(900, activation='tanh', activity_regularizer=regularizers.l1(10e-3))(inputs) # encoder
+d1 = tf.keras.layers.Dense(900, activation='tanh', activity_regularizer=regularizers.l1(10e-2))(inputs) # encoder
 outputs = tf.keras.layers.Dense(600, use_bias=False)(d1)          # decoder
 model = tf.keras.Model(inputs=inputs, outputs=outputs, name='PSD')
 model.summary()
@@ -28,7 +29,7 @@ model.compile(optimizer='adam',
               metrics='mse',
               )
 
-history_PSD = model.fit(x_train, x_train, batch_size=16, epochs=30, validation_split=0.2)
+history_PSD = model.fit(x_train_face, x_train_finger, batch_size=16, epochs=30, validation_split=0.2)
 prediction = model.predict(x_train)
 
 # extract feature layers from the trained DN-PSD
@@ -49,8 +50,8 @@ METRICS = [
 ]
 
 model.compile(optimizer='adam',
-              loss=tf.keras.losses.BinaryCrossentropy(),
+              loss=tf.keras.losses.categorical_crossentropy(),
               metrics=METRICS,
               )
 
-history_class = model.fit(successive_feature_maps[1], y_train, batch_size=16, epochs=30, validation_split=0.2)
+history_class = model.fit(successive_feature_maps[0], y_train, batch_size=16, epochs=30, validation_split=0.2)
