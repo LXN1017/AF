@@ -44,7 +44,7 @@ model = tf.keras.Model(inputs=inputs, outputs=outputs, name='AF_classify')
 model.summary()
 
 METRICS = [
-    tf.keras.metrics.BinaryAccuracy(name='accuracy'),
+    tf.keras.metrics.categorical_accuracy(name='accuracy'),
     tf.keras.metrics.AUC(name='AUC'),
 ]
 
