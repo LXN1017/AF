@@ -1,3 +1,5 @@
+## updated by authors of ICCV manuscript 6416.
+## 2021/03/29
 import tensorflow as tf
 import h5py
 from scipy.io import loadmat as load
@@ -7,8 +9,6 @@ from tensorflow.python.keras.layers import Conv3D, BatchNormalization, Activatio
 import scipy.io as io
 from scipy.io import loadmat as load
 
-## updated by authors of ICCV manuscript 6416.
-## 2021/03/29
 
 def feature_normalize(data):
     for i in range(data.shape[0]):
@@ -16,6 +16,7 @@ def feature_normalize(data):
         sigma = np.std(data[i, :])
         data[i, :] = (data[i, :] - mu) / sigma
     return data
+
 
 #-----------------load videos used as inputs of AST-CNN-----------------------
 feature = h5py.File('vid_set.mat')
