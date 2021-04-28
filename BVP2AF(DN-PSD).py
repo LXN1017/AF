@@ -39,7 +39,7 @@ successive_feature_maps = visualization_model.predict(x_train)
 
 # -----------------------AF classifier in DN-PSD-------------------------------
 inputs = tf.keras.Input(shape=(1, 900), name='bvp_feature')
-c1 = tf.keras.layers.Dense(450, activation='sigmoid')(inputs)
+c1 = tf.keras.layers.Dense(450, activation='relu')(inputs)
 outputs = tf.keras.layers.Dense(2, activation='sigmoid')(c1)
 model = tf.keras.Model(inputs=inputs, outputs=outputs, name='AF_classify')
 model.summary()
