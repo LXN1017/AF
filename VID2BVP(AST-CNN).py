@@ -1,5 +1,8 @@
 ## updated by authors of ICCV manuscript 6416.
 ## 2021/03/29
+## This model requires a huge computer memory because the training data are single-channel videos. 
+## Please load the training data in batches and successively train the model several times if the computer memory is not enough.
+
 import tensorflow as tf
 import h5py
 from scipy.io import loadmat as load
