@@ -11,9 +11,11 @@ from scipy.io import loadmat as load
 ## 2021/03/29
 
 def feature_normalize(data):
-    mu = np.mean(data)
-    sigma = np.std(data)
-    return (data - mu) / sigma
+    for i in range(data.shape[0]):
+        mu = np.mean(data[i, :])
+        sigma = np.std(data[i, :])
+        data[i, :] = (data[i, :] - mu) / sigma
+    return data
 
 #-----------------load videos used as inputs of AST-CNN-----------------------
 feature = h5py.File('vid_set.mat')
