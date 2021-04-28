@@ -7,9 +7,11 @@ from tensorflow.python.keras import regularizers
 ## 2021/03/31
 
 def feature_normalize(data):
-    mu = np.mean(data)
-    sigma = np.std(data)
-    return (data - mu) / sigma
+    for i in range(data.shape[0]):
+        mu = np.mean(data[i, :])
+        sigma = np.std(data[i, :])
+        data[i, :] = (data[i, :] - mu) / sigma
+    return data
 
 
 x_train_face = load('training_samples_face.mat') # VPPG pulse signals from face videos
