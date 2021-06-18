@@ -37,6 +37,13 @@ x_train_mask = np.expand_dims(x_train_mask, axis=4)
 data = load('bvp_set.mat')
 y_train = data['bvp_set']
 tf.bitcast(y_train, float)
+
+np.random.seed(np.size(x_train, 0))
+np.random.shuffle(x_train)
+np.random.seed(np.size(x_train, 0))
+np.random.shuffle(y_train)
+tf.random.set_seed(np.size(x_train, 0))
+
 # -----------------------AST-CNN architecture-------------------------------
 input1 = tf.keras.Input(shape=(100, 200, 600, 1), name='bvp')
 c11 = tf.keras.layers.Conv3D(filters=64, kernel_size=(3, 3, 1), strides=[3, 3, 1], padding='valid', activation='tanh')(input1)
