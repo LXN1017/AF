@@ -18,6 +18,11 @@ x_train_face = load('training_samples_face.mat') # VPPG pulse signals from face 
 x_train_finger = load('training_samples_finger.mat') # PPG pulse signals from fingertips
 y_train = load('training_labels.mat') # lables for AF classification
 
+np.random.seed(np.size(x_train, 0))
+np.random.shuffle(x_train)
+np.random.seed(np.size(x_train, 0))
+np.random.shuffle(y_train)
+tf.random.set_seed(np.size(x_train, 0))
 
 # -----------------------Sparse representation in DN-PSD-------------------------------
 inputs = tf.keras.Input(shape=(1, 600), name='raw_bvp')
