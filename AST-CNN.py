@@ -86,8 +86,3 @@ model.compile(optimizer='adam',
               )
 
 history = model.fit([x_train, x_train_mask], [y_train], batch_size=16, epochs=50)
-
-# -----------------------feature map learned by AST-CNN -------------------------------
-successive_outputs = [layer.output for layer in model.layers[1:]]
-visualization_model = tf.keras.models.Model(inputs = model.input, outputs = successive_outputs)
-successive_feature_maps = visualization_model.predict([x_train, x_train_mask])
