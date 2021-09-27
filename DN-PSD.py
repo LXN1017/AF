@@ -38,7 +38,7 @@ model.compile(optimizer='adam',
 history_PSD = model.fit(x_train_VPPG, x_train_PPG, batch_size=16, epochs=50)
 
 
-# extract feature layers from the trained DN-PSD
+# -----------------extract sparse codes for AF classification------------------------
 successive_outputs = [layer.output for layer in model.layers[1:]]
 visualization_model = tf.keras.models.Model(inputs = model.input, outputs = successive_outputs)
 successive_feature_maps = visualization_model.predict(x_train_VPPG)
