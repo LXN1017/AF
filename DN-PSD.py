@@ -1,4 +1,4 @@
-##Code for the DN-PSD network
+## Code for the DN-PSD network
 ## Author： Xuenan Liu
 ## 2021/09/20
 
@@ -15,16 +15,16 @@ def feature_normalize(data):
     return data
 
 
-x_train_VPPG = np.load('VPPG_set.mat') # VPPG pulse signals from face videos
-x_train_PPG = np.load('PPG_set.mat') # PPG pulse signals from fingertips
-y_train = np.load('training_labels.mat') # lables for AF classification
+x_train_VPPG = np.load('x_train_VPPG.npy') # VPPG pulse signals from face videos
+x_train_PPG = np.load('x_train_PPG.npy') # PPG pulse signals from fingertips
+y_train = np.load('y_train.npy') # lables for AF classification
 
 
 # -----------------------Sparse representation in DN-PSD-------------------------------
 inputs = tf.keras.Input(shape=(1, 600), name='raw_bvp')
 d1 = tf.keras.layers.Dense(750, activation='tanh', )(inputs)   # encoder
 d2 = tf.keras.layers.Dense(900, activation='tanh', activity_regularizer=regularizers.l1(10e-3))(d1) # encoder
-d3 = tf.keras.layers.Dense(600, use_bias=False)(d2)          # decoder
+d3 = tf.keras.layers.Dense(750, use_bias=False)(d2)          # decoder
 outputs = tf.keras.layers.Dense(600, use_bias=False)(d3)          # decoder
 model = tf.keras.Model(inputs=inputs, outputs=outputs, name='PSD')
 model.summary()
