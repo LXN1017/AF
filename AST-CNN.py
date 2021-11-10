@@ -12,20 +12,27 @@ from scipy.io import loadmat as load
 #-----------------signal normalization------------------------------
 def feature_normalize(data):
     for i in range(data.shape[0]):
-        mu = np.mean(data[i, :])
-        sigma = np.std(data[i, :])
-        data[i, :] = (data[i, :] - mu) / sigma
+        min_val = np.min(data[i, :])
+        max_val = np.max(data[i, :])
+        data[i, :] = (data[i, :] - min_val) / (max_val - min_val)
     return data
 
 
 #-----------------Pearson loss function------------------------------
 def custom_loss(lab, pre):
-    lab_ = lab-tf.reduce_mean(lab, axis=1)
-    pre_ = pre-tf.reduce_mean(pre, axis=1)
-    # custom_loss = (lab_-pre_)**2
-    Pearson = tf.multiply(lab_, pre_)/(tf.norm(lab_)*tf.norm(pre_))
-    custom_loss = 1 - Pearson
-    return custom_loss
+    # lab_ = lab-tf.reduce_mean(lab)
+    # pre_ = pre-tf.reduce_mean(pre)
+    # Pearson = tf.multiply(lab_, pre_)/(tf.norm(lab_)*tf.norm(pre_))
+    # neg_p = 1 - Pearson
+    neg_p = tf.zeros([1, lab.shape[1]])
+    p_sum = 0
+    for i in range(0, lab.shape[0]):
+        lab_nor = lab[i, :] - tf.reduce_mean(lab[i, :])
+        pre_nor = pre[i, :] - tf.reduce_mean(pre[i, :])
+        pearson = 1 - tf.multiply(lab_nor, pre_nor) / (tf.norm(lab_nor) * tf.norm(pre_nor))
+        neg_p = p_sum + pearson
+    neg_p = neg_p/32
+    return neg_p
 
 
 #-----------------load videos used as inputs of AST-CNN-----------------------
