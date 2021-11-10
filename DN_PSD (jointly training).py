@@ -11,9 +11,9 @@ from matplotlib import pyplot as plt
 
 def feature_normalize(data):
     for i in range(data.shape[0]):
-        mu = np.mean(data[i, :])
-        sigma = np.std(data[i, :])
-        data[i, :] = (data[i, :] - mu) / sigma
+        min_val = np.min(data[i, :])
+        max_val = np.max(data[i, :])
+        data[i, :] = (data[i, :] - min_val) / (max_val - min_val)
     return data
 
 
